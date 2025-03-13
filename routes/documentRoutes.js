@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/', getAllDocuments);
 router.get('/:id', getDocumentById);
-router.get('/courses/:id', getDocumentByIdLesson);
+router.get('/lessons/:id', getDocumentByIdLesson);
 // router.post('/', authMiddleware, createCourse);
 router.post('/', createDocument);
 router.put('/:id', updateDocument);
