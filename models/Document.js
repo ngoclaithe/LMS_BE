@@ -1,13 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const Assignment = sequelize.define('Assignment', {
-    id_assignment: {
+const Document = sequelize.define('Document', {
+    id_document: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    id_week: {
+    id_lesson: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -19,16 +19,16 @@ const Assignment = sequelize.define('Assignment', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    deadline: {
-        type: DataTypes.DATE,
+    file_url: {
+        type: DataTypes.STRING,
         allowNull: false,
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+    uploaded_by: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
     }
 },{
     timestamps: true,
 });
 
-module.exports = Assignment;
+module.exports = Document;

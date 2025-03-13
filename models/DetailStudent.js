@@ -23,7 +23,7 @@ const DetailStudent = sequelize.define('DetailStudent', {
         type: DataTypes.INTEGER,
         allowNull: true,         
     },
-    class: {
+    class_student: {
         type: DataTypes.STRING,
         allowNull: true,            
     },
@@ -41,6 +41,8 @@ const DetailStudent = sequelize.define('DetailStudent', {
     }
 },{
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 });
 
 module.exports = DetailStudent;

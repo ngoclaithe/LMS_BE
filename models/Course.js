@@ -41,6 +41,10 @@ const Course = sequelize.define('Course', {
         type: DataTypes.TEXT,
         allowNull: true,
         defaultValue: "Public"        
+    },
+    id_teacher: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
     }
 },{
     timestamps: true,

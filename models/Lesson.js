@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const Library = sequelize.define('Library', {
-    id_library: {
+const Lesson = sequelize.define('Lesson', {
+    id_lesson: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -15,24 +15,20 @@ const Library = sequelize.define('Library', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    description: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    file_url: {
+    content: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    uploaded_by: {
+    video_url: {
+        type: DataTypes.STRING,
+        allowNull: true,        
+    },
+    order: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    uploaded_at: {
-        type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: true,            
     }
-},{
+}, {
     timestamps: true,
 });
 
-module.exports = Library;
+module.exports = Lesson;
