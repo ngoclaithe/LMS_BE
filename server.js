@@ -8,7 +8,8 @@ const assignmentRoutes = require('./routes/assignmentRoutes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const detailStudentRoutes = require('./routes/detailStudentRoutes');
-
+const lessonRoutes = require('./routes/lessonRoutes');
+const documentRoutes = require('./routes/documentRoutes');
 const authMiddleware = require('./middlewares/authMiddleware');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 const loggerMiddleware = require('./middlewares/loggerMiddleware');
@@ -34,6 +35,8 @@ app.use('/api/assignments', assignmentRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/detailstudents', detailStudentRoutes);
+app.use('/api/lessons', lessonRoutes);
+app.use('/api/documents', documentRoutes);
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
