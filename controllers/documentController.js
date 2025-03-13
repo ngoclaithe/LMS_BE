@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const Document = require('../models/Document');
 
 exports.getAllDocuments = async (req, res) => {
@@ -21,7 +22,18 @@ exports.getDocumentById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+exports.getDocumentByIdLesson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const document = await Document.findAll({where: {id_lesson: id}});
+    if (!document) {
+      return res.status(404).json({ message: 'Document not found' });
+    }
+    res.status(200).json(document);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 exports.createDocument = async (req, res) => {
   try {
     const newDocument = await Document.create(req.body);

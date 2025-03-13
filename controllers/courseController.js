@@ -108,3 +108,16 @@ exports.getAllCoursesByCourseType = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server', error });
     }
 };
+exports.getAllCoursesByCourseName = async (req, res) => {
+    const { course_name } = req.params;
+    
+    try {
+        const courses = await Course.findAll({
+            where: { course_name },
+            order: [['created_at', 'DESC']]
+        });
+        res.status(200).json(courses);
+    } catch (error) {
+        res.status(500).json({ message: 'Lỗi server', error });
+    }
+};

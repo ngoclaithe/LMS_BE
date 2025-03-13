@@ -6,7 +6,8 @@ const {
     updateCourse,
     deleteCourse,
     get5CourseByCourseType,
-    getAllCoursesByCourseType
+    getAllCoursesByCourseType,
+    getAllCoursesByCourseName
 } = require('../controllers/courseController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -15,7 +16,7 @@ const router = express.Router();
 
 router.get('/type/:course_type/limit5', get5CourseByCourseType);
 router.get('/type/:course_type', getAllCoursesByCourseType);
-
+router.get('/name/:course_name', getAllCoursesByCourseName);
 router.get('/', getCourses);
 router.get('/:id', getCourseById);
 

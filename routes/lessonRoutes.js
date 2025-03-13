@@ -3,6 +3,7 @@ const {
     createLesson,
     getAllLessons,
     getLessonById,
+    getLessonByIdCourse,
     updateLesson,
     deleteLesson
 } = require('../controllers/lessonController');
@@ -12,7 +13,7 @@ const router = express.Router();
 
 router.get('/', getAllLessons);
 router.get('/:id', getLessonById);
-
+router.get('/courses/:id', getLessonByIdCourse);
 // router.post('/', authMiddleware, createCourse);
 router.post('/', createLesson);
 router.put('/:id', updateLesson);
