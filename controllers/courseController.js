@@ -1,5 +1,5 @@
 const Course = require('../models/Course');
-
+const { Op } = require('sequelize');
 exports.createCourse = async (req, res) => {
     const { course_name, description, start_date, end_date, price, avatar, user_create, course_type } = req.body;
     console.log(req.body);
@@ -113,7 +113,9 @@ exports.getAllCoursesByCourseName = async (req, res) => {
     
     try {
         const courses = await Course.findAll({
-            where: { course_name },
+            where: { 
+                course_name: { [Op.iLike]: `%${course_name}%` } 
+            },
             order: [['created_at', 'DESC']]
         });
         res.status(200).json(courses);
