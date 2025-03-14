@@ -1,5 +1,6 @@
 const Course = require('../models/Course');
-const { Op } = require('sequelize');
+const { Op, fn, col, literal } = require('sequelize');
+
 exports.createCourse = async (req, res) => {
     const { course_name, description, start_date, end_date, price, avatar, user_create, course_type } = req.body;
     console.log(req.body);
@@ -108,18 +109,62 @@ exports.getAllCoursesByCourseType = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server', error });
     }
 };
+
 exports.getAllCoursesByCourseName = async (req, res) => {
     const { course_name } = req.params;
     
+    if (!course_name || course_name.trim() === '') {
+        return res.status(200).json([]);
+    }
+    
     try {
-        const courses = await Course.findAll({
-            where: { 
-                course_name: { [Op.iLike]: `%${course_name}%` } 
-            },
-            order: [['created_at', 'DESC']]
+        const searchWords = course_name.trim().split(/\s+/);
+        
+        const whereConditions = [];
+        
+        whereConditions.push({
+            course_name: { [Op.iLike]: `%${course_name}%` }
         });
-        res.status(200).json(courses);
+        
+        if (searchWords.length > 1) {
+            const wordConditions = searchWords.map(word => ({
+                course_name: { [Op.iLike]: `%${word}%` }
+            }));
+            whereConditions.push({ [Op.and]: wordConditions });
+        }
+        
+        const courses = await Course.findAll({
+            where: { [Op.or]: whereConditions },
+            order: [
+                [literal(`CASE WHEN "course_name" ILIKE '%${course_name}%' THEN 0 ELSE 1 END`), 'ASC'],
+                [literal(`CASE WHEN "course_name" ILIKE '${course_name}%' THEN 0 ELSE 1 END`), 'ASC'],
+                [literal(`ABS(LENGTH("course_name") - ${course_name.length})`), 'ASC'],
+                ['created_at', 'DESC']
+            ]
+        });
+
+        const enhancedCourses = courses.map(course => {
+            const courseObj = course.toJSON();
+            
+            let score = 0;
+            if (courseObj.course_name.toLowerCase().includes(course_name.toLowerCase())) score += 10;
+            if (courseObj.course_name.toLowerCase().startsWith(course_name.toLowerCase())) score += 5;
+            
+            searchWords.forEach(word => {
+                if (courseObj.course_name.toLowerCase().includes(word.toLowerCase())) score += 2;
+            });
+            
+            courseObj.customScore = score;
+            return courseObj;
+        });
+        
+        enhancedCourses.forEach(course => {
+            console.log(`Course Name: ${course.course_name}, Custom Score: ${course.customScore}`);
+        });
+
+        res.status(200).json(enhancedCourses);
     } catch (error) {
+        console.error('Lỗi khi tìm khóa học:', error);
         res.status(500).json({ message: 'Lỗi server', error });
     }
 };
